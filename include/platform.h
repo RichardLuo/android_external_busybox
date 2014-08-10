@@ -373,7 +373,7 @@ typedef unsigned smalluint;
 #define HAVE_VASPRINTF 1
 #define HAVE_UNLOCKED_STDIO 1
 #define HAVE_UNLOCKED_LINE_OPS 1
-#define HAVE_GETLINE 1
+#undef HAVE_GETLINE
 #define HAVE_XTABS 1
 #define HAVE_MNTENT_H 1
 #define HAVE_NET_ETHERNET_H 1
