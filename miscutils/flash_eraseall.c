@@ -19,7 +19,7 @@
 
 #include "libbb.h"
 #include <mtd/mtd-user.h>
-#include <linux/jffs2.h>
+//#include <linux/jffs2.h>
 
 #define OPTION_J  (1 << 0)
 #define OPTION_Q  (1 << 1)
@@ -62,7 +62,6 @@ static void show_progress(mtd_info_t *meminfo, erase_info_t *erase)
 int flash_eraseall_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
 int flash_eraseall_main(int argc UNUSED_PARAM, char **argv)
 {
-	struct jffs2_unknown_node cleanmarker;
 	mtd_info_t meminfo;
 	int fd, clmpos, clmlen;
 	erase_info_t erase;
@@ -86,53 +85,6 @@ int flash_eraseall_main(int argc UNUSED_PARAM, char **argv)
 
 	clmpos = 0;
 	clmlen = 8;
-	if (flags & OPTION_J) {
-		uint32_t *crc32_table;
-
-		crc32_table = crc32_filltable(NULL, 0);
-
-		cleanmarker.magic = cpu_to_je16(JFFS2_MAGIC_BITMASK);
-		cleanmarker.nodetype = cpu_to_je16(JFFS2_NODETYPE_CLEANMARKER);
-		if (!(flags & IS_NAND))
-			cleanmarker.totlen = cpu_to_je32(sizeof(struct jffs2_unknown_node));
-		else {
-			struct nand_oobinfo oobinfo;
-
-			xioctl(fd, MEMGETOOBSEL, &oobinfo);
-
-			/* Check for autoplacement */
-			if (oobinfo.useecc == MTD_NANDECC_AUTOPLACE) {
-				/* Get the position of the free bytes */
-				clmpos = oobinfo.oobfree[0][0];
-				clmlen = oobinfo.oobfree[0][1];
-				if (clmlen > 8)
-					clmlen = 8;
-				if (clmlen == 0)
-					bb_error_msg_and_die("autoplacement selected and no empty space in oob");
-			} else {
-				/* Legacy mode */
-				switch (meminfo.oobsize) {
-				case 8:
-					clmpos = 6;
-					clmlen = 2;
-					break;
-				case 16:
-					clmpos = 8;
-					/*clmlen = 8;*/
-					break;
-				case 64:
-					clmpos = 16;
-					/*clmlen = 8;*/
-					break;
-				}
-			}
-			cleanmarker.totlen = cpu_to_je32(8);
-		}
-
-		cleanmarker.hdr_crc = cpu_to_je32(
-			crc32_block_endian0(0, &cleanmarker, sizeof(struct jffs2_unknown_node) - 4, crc32_table)
-		);
-	}
 
 	/* Don't want to destroy progress indicator by bb_error_msg's */
 	applet_name = xasprintf("\n%s: %s", applet_name, mtd_name);
@@ -168,32 +120,6 @@ int flash_eraseall_main(int argc UNUSED_PARAM, char **argv)
 
 		xioctl(fd, MEMERASE, &erase);
 
-		/* format for JFFS2 ? */
-		if (!(flags & OPTION_J))
-			continue;
-
-		/* write cleanmarker */
-		if (flags & IS_NAND) {
-			struct mtd_oob_buf oob;
-
-			oob.ptr = (unsigned char *) &cleanmarker;
-			oob.start = erase.start + clmpos;
-			oob.length = clmlen;
-			xioctl(fd, MEMWRITEOOB, &oob);
-		} else {
-			xlseek(fd, erase.start, SEEK_SET);
-			/* if (lseek(fd, erase.start, SEEK_SET) < 0) {
-				bb_perror_msg("MTD %s failure", "seek");
-				continue;
-			} */
-			xwrite(fd, &cleanmarker, sizeof(cleanmarker));
-			/* if (write(fd, &cleanmarker, sizeof(cleanmarker)) != sizeof(cleanmarker)) {
-				bb_perror_msg("MTD %s failure", "write");
-				continue;
-			} */
-		}
-		if (!(flags & OPTION_Q))
-			printf(" Cleanmarker written at %x.", erase.start);
 	}
 	if (!(flags & OPTION_Q)) {
 		show_progress(&meminfo, &erase);

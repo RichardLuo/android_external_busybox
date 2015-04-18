@@ -53,6 +53,7 @@
 /bin/fgrep
 /bin/find
 /sbin/flash_lock
+/sbin/flash_eraseall
 /sbin/flash_unlock
 /sbin/flashcp
 /bin/flock
