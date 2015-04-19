@@ -114,6 +114,7 @@ BUSYBOX_C_INCLUDES = \
 	bionic/libm \
 	libc/kernel/common \
 	$(BB_PATH)/android/regex \
+	$(BB_PATH)/kernel_header/include/ \
 	$(BB_PATH)/android/librpc
 
 BUSYBOX_CFLAGS = \

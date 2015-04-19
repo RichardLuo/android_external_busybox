@@ -56,11 +56,12 @@
 /sbin/flash_eraseall
 /sbin/flash_unlock
 /sbin/flashcp
-/bin/flock
-/bin/fold
-/bin/free
-/sbin/freeramdisk
-/sbin/fstrim
+/sbin/ubiattach
+/sbin/ubidetach
+/sbin/ubimkvol
+/sbin/ubirmvol
+/sbin/ubirsvol
+/sbin/ubiupdatevol
 /bin/fsync
 /bin/ftpget
 /bin/ftpput
