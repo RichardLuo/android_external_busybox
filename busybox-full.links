@@ -52,10 +52,6 @@
 /sbin/fdisk
 /bin/fgrep
 /bin/find
-/sbin/flash_lock
-/sbin/flash_eraseall
-/sbin/flash_unlock
-/sbin/flashcp
 /bin/fsync
 /bin/ftpget
 /bin/ftpput
@@ -108,8 +104,6 @@
 /bin/mountpoint
 /bin/mpstat
 /bin/mv
-/sbin/nanddump
-/sbin/nandwrite
 /sbin/nbd-client
 /bin/nc
 /bin/netstat
