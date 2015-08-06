@@ -204,3 +204,4 @@
 /bin/xzcat
 /bin/yes
 /bin/zcat
+/bin/hwclock
