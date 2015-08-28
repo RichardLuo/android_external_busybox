@@ -205,3 +205,4 @@
 /bin/yes
 /bin/zcat
 /bin/hwclock
+/sbin/reboot
