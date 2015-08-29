@@ -167,19 +167,27 @@ LOCAL_SRC_FILES += android/libc/__set_errno.c
 endif
 LOCAL_C_INCLUDES := $(BUSYBOX_C_INCLUDES)
 LOCAL_CFLAGS := $(BUSYBOX_CFLAGS)
+LOCAL_CFLAGS += \
+  -Dgetusershell=busybox_getusershell \
+  -Dsetusershell=busybox_setusershell \
+  -Dendusershell=busybox_endusershell \
+  -Dttyname_r=busybox_ttyname_r \
+  -Dgetmntent=busybox_getmntent \
+  -Dgetmntent_r=busybox_getmntent_r \
+  -Dgenerate_uuid=busybox_generate_uuid
 LOCAL_LDFLAGS += -Wl,--no-fatal-warnings
+LOCAL_FORCE_STATIC_EXECUTABLE := true
+LOCAL_STATIC_LIBRARIES := libclearsilverregex libc libcutils libm libuclibcrpc
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT_SBIN)
+LOCAL_UNSTRIPPED_PATH := $(TARGET_ROOT_OUT_SBIN_UNSTRIPPED)
 LOCAL_MODULE := busybox
-LOCAL_MODULE_TAGS := eng debug
-LOCAL_MODULE_PATH := $(TARGET_OUT_OPTIONAL_EXECUTABLES)
-LOCAL_SHARED_LIBRARIES := libc libcutils libm
-LOCAL_STATIC_LIBRARIES := libclearsilverregex libuclibcrpc
 $(LOCAL_MODULE): busybox_prepare
 include $(BUILD_EXECUTABLE)
 
 BUSYBOX_LINKS := $(shell cat $(BB_PATH)/busybox-$(BUSYBOX_CONFIG).links)
 # nc is provided by external/netcat
 exclude := nc
-SYMLINKS := $(addprefix $(TARGET_OUT_OPTIONAL_EXECUTABLES)/,$(filter-out $(exclude),$(notdir $(BUSYBOX_LINKS))))
+SYMLINKS := $(addprefix $(LOCAL_MODULE_PATH)/,$(filter-out $(exclude),$(notdir $(BUSYBOX_LINKS))))
 $(SYMLINKS): BUSYBOX_BINARY := $(LOCAL_MODULE)
 $(SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 	@echo "Symlink: $@ -> $(BUSYBOX_BINARY)"
