@@ -30,7 +30,7 @@
 //usage:     "\n	-q	Quiet"
 //usage:     "\n	-x FILE	Exclude FILEs"
 //usage:     "\n	-d DIR	Extract into DIR"
-
+#define ENABLE_DESKTOP 1
 #include "libbb.h"
 #include "bb_archive.h"
 
