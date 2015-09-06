@@ -122,7 +122,6 @@
 /sbin/poweroff
 /bin/printenv
 /bin/printf
-/bin/ps
 /bin/pstree
 /bin/pwd
 /bin/pwdx
