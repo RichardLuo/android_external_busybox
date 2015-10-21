@@ -29,7 +29,6 @@
 /sbin/crond
 /bin/crontab
 /bin/cut
-/bin/date
 /bin/dc
 /bin/dd
 /sbin/depmod
