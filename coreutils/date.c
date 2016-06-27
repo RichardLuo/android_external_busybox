@@ -170,6 +170,40 @@ static const char date_longopts[] ALIGN1 =
 		;
 #endif
 
+#include <asm/ioctl.h>
+#define ANDROID_ALARM_SET_RTC _IOW('a', 5, struct timespec)
+static void settime(char *s) {
+    struct tm tm;
+    int day = atoi(s);
+    int hour;
+    time_t t;
+    int fd;
+    struct timespec ts;
+
+    while (*s && *s != '.')
+        s++;
+
+    if (*s)
+        s++;
+
+    hour = atoi(s);
+
+    tm.tm_year = day / 10000 - 1900;
+    tm.tm_mon = (day % 10000) / 100 - 1;
+    tm.tm_mday = (day % 100);
+    tm.tm_hour = hour / 10000;
+    tm.tm_min = (hour % 10000) / 100;
+    tm.tm_sec = (hour % 100);
+    tm.tm_isdst = -1;
+
+    t = mktime(&tm);
+    
+    fd = open("/dev/alarm", O_RDWR);
+    ts.tv_sec = t;
+    ts.tv_nsec = 0;
+    ioctl(fd, ANDROID_ALARM_SET_RTC, &ts);
+}
+
 int date_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
 int date_main(int argc UNUSED_PARAM, char **argv)
 {
@@ -271,31 +305,7 @@ int date_main(int argc UNUSED_PARAM, char **argv)
 
 	/* If date string is given, update tm_time, and maybe set date */
 	if (date_str != NULL) {
-		/* Zero out fields - take her back to midnight! */
-		tm_time.tm_sec = 0;
-		tm_time.tm_min = 0;
-		tm_time.tm_hour = 0;
-
-		/* Process any date input to UNIX time since 1 Jan 1970 */
-		if (ENABLE_FEATURE_DATE_ISOFMT && (opt & OPT_HINT)) {
-			if (strptime(date_str, fmt_str2dt, &tm_time) == NULL)
-				bb_error_msg_and_die(bb_msg_invalid_date, date_str);
-		} else {
-			parse_datestr(date_str, &tm_time);
-		}
-
-		/* Correct any day of week and day of year etc. fields */
-		/* Be sure to recheck dst (but not if date is time_t format) */
-		if (date_str[0] != '@')
-			tm_time.tm_isdst = -1;
-		ts.tv_sec = validate_tm_time(date_str, &tm_time);
-
-		maybe_set_utc(opt);
-
-		/* if setting time, set it */
-		if ((opt & OPT_SET) && stime(&ts.tv_sec) < 0) {
-			bb_perror_msg("can't set date");
-		}
+        settime(date_str);
 	}
 
 	/* Display output */
