@@ -165,3 +165,4 @@
 /bin/zcat
 /bin/ping
 /bin/ping6
+/bin/nc

@@ -203,5 +203,6 @@
 /bin/xzcat
 /bin/yes
 /bin/zcat
+/bin/nc
 /bin/hwclock
 /sbin/reboot
