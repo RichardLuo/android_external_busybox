@@ -2,7 +2,7 @@
  * Automatically generated C config: don't edit
  * Busybox version: 1.21.1-jb
  */
-#define AUTOCONF_TIMESTAMP "2013-07-25 21:23 +0100"
+#define AUTOCONF_TIMESTAMP "2018-08-09 12:21 +0800"
 
 #define CONFIG_HAVE_DOT_CONFIG 1
 #define ENABLE_HAVE_DOT_CONFIG 1
@@ -316,10 +316,10 @@
 #define ENABLE_FEATURE_FAST_TOP 1
 #define IF_FEATURE_FAST_TOP(...) __VA_ARGS__
 #define IF_NOT_FEATURE_FAST_TOP(...)
-#undef CONFIG_FEATURE_ETC_NETWORKS
-#define ENABLE_FEATURE_ETC_NETWORKS 0
-#define IF_FEATURE_ETC_NETWORKS(...)
-#define IF_NOT_FEATURE_ETC_NETWORKS(...) __VA_ARGS__
+#define CONFIG_FEATURE_ETC_NETWORKS 1
+#define ENABLE_FEATURE_ETC_NETWORKS 1
+#define IF_FEATURE_ETC_NETWORKS(...) __VA_ARGS__
+#define IF_NOT_FEATURE_ETC_NETWORKS(...)
 #define CONFIG_FEATURE_USE_TERMIOS 1
 #define ENABLE_FEATURE_USE_TERMIOS 1
 #define IF_FEATURE_USE_TERMIOS(...) __VA_ARGS__
@@ -2588,10 +2588,10 @@
 #define ENABLE_NBDCLIENT 0
 #define IF_NBDCLIENT(...)
 #define IF_NOT_NBDCLIENT(...) __VA_ARGS__
-#undef CONFIG_NC
-#define ENABLE_NC 0
-#define IF_NC(...)
-#define IF_NOT_NC(...) __VA_ARGS__
+#define CONFIG_NC 1
+#define ENABLE_NC 1
+#define IF_NC(...) __VA_ARGS__
+#define IF_NOT_NC(...)
 #undef CONFIG_NC_SERVER
 #define ENABLE_NC_SERVER 0
 #define IF_NC_SERVER(...)
@@ -2604,18 +2604,18 @@
 #define ENABLE_NC_110_COMPAT 0
 #define IF_NC_110_COMPAT(...)
 #define IF_NOT_NC_110_COMPAT(...) __VA_ARGS__
-#undef CONFIG_PING
-#define ENABLE_PING 0
-#define IF_PING(...)
-#define IF_NOT_PING(...) __VA_ARGS__
+#define CONFIG_PING 1
+#define ENABLE_PING 1
+#define IF_PING(...) __VA_ARGS__
+#define IF_NOT_PING(...)
 #undef CONFIG_PING6
 #define ENABLE_PING6 0
 #define IF_PING6(...)
 #define IF_NOT_PING6(...) __VA_ARGS__
-#undef CONFIG_FEATURE_FANCY_PING
-#define ENABLE_FEATURE_FANCY_PING 0
-#define IF_FEATURE_FANCY_PING(...)
-#define IF_NOT_FEATURE_FANCY_PING(...) __VA_ARGS__
+#define CONFIG_FEATURE_FANCY_PING 1
+#define ENABLE_FEATURE_FANCY_PING 1
+#define IF_FEATURE_FANCY_PING(...) __VA_ARGS__
+#define IF_NOT_FEATURE_FANCY_PING(...)
 #undef CONFIG_WHOIS
 #define ENABLE_WHOIS 0
 #define IF_WHOIS(...)
