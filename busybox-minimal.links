@@ -163,3 +163,5 @@
 /bin/xzcat
 /bin/yes
 /bin/zcat
+/bin/ping
+/bin/ping6
